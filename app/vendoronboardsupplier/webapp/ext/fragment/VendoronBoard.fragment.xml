@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:macros="sap.fe.macros">
+    <HBox core:require="{ handler: 'vendoronboardsupplier/ext/fragment/VendoronBoard'}">
+        <!-- <ScrollContainer width="100%"> -->
+        <!-- <HBox > -->
+        <VBox >
+            <Table id="parentTable" class="tableClass">
+            </Table>
+        </VBox>
+        <HBox >
+
+        </HBox>
+        <!-- </HBox> -->
+        <!-- </ScrollContainer> -->
+    </HBox>
+</core:FragmentDefinition>

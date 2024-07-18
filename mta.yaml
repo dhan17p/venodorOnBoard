@@ -1,0 +1,179 @@
+_schema-version: "3.1"
+ID: vendorOnBoard
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: vendorOnBoard-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: vendorOnBoard-db
+  - name: uaa_vendorOnBoard
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    readiness-health-check-http-endpoint: /health
+    readiness-health-check-type: http
+  build-parameters:
+    builder: npm
+- name: vendorOnBoard-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: vendorOnBoard-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: vendorOnBoard-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: vendorOnBoard-destination-service
+    parameters:
+      content-target: true
+  - name: vendorOnBoard_html_repo_host
+    parameters:
+      service-key:
+        name: vendorOnBoard_html_repo_host-key
+  - name: uaa_vendorOnBoard
+    parameters:
+      service-key:
+        name: uaa_vendorOnBoard-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: vendorOnBoardApprouter_vendorOnBoard_html_repo_host
+          ServiceInstanceName: vendorOnBoard-html5-app-host-service
+          ServiceKeyName: vendorOnBoard_html_repo_host-key
+          sap.cloud.service: vendorOnBoardApprouter
+        - Authentication: OAuth2UserTokenExchange
+          Name: vendorOnBoardApprouter_uaa_vendorOnBoard
+          ServiceInstanceName: vendorOnBoard-xsuaa-service
+          ServiceKeyName: uaa_vendorOnBoard-key
+          sap.cloud.service: vendorOnBoardApprouter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: vendorOnBoard-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: vendorOnBoard_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - vendoronboardrequest.zip
+      name: vendoronboardrequest
+      target-path: resources/
+    - artifacts:
+      - vendoronboardsupplier.zip
+      name: vendoronboardsupplier
+      target-path: resources/
+    - artifacts:
+      - vendoronboarddocument.zip
+      name: vendoronboarddocument
+      target-path: resources/
+    - artifacts:
+      - vendoronboardapproval.zip
+      name: vendoronboardapproval
+      target-path: resources/
+- name: vendoronboardrequest
+  type: html5
+  path: app/vendoronboardrequest
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: vendoronboardsupplier
+  type: html5
+  path: app/vendoronboardsupplier
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: vendoronboarddocument
+  type: html5
+  path: app/vendoronboarddocument
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: vendoronboardapproval
+  type: html5
+  path: app/vendoronboardapproval
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: vendorOnBoard-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: vendorOnBoard-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: vendorOnBoard-srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: vendorOnBoard-destination-service
+    service-plan: lite
+  requires:
+  - name: srv-api
+- name: vendorOnBoard_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: vendorOnBoard-html5-app-host-service
+    service-plan: app-host
+- name: uaa_vendorOnBoard
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: vendorOnBoard-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production

@@ -1,0 +1,45 @@
+{
+  "name": "vendorOnBoard",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^7",
+    "@sap/cds-hana": "^2",
+    "@sap/xssec": "^3.3.5",
+    "express": "^4",
+    "passport": "^0.6.0",
+    "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
+    "@sap/eslint-plugin-cds": "^3",
+    "@sap/ux-specification": "^1.120.14",
+    "eslint": "^9",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-vobrequest": "cds watch --open vobrequest/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy vendorOnBoard --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-vendoronboardrequest": "cds watch --open vendoronboardrequest/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-vendoronboardsupplier": "cds watch --open vendoronboardsupplier/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-vendoronboarddocument": "cds watch --open vendoronboarddocument/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-vendoronboardapproval": "cds watch --open vendoronboardapproval/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "requires": {}
+  },
+  "sapux": [
+    "app/vobrequest",
+    "app/vendoronboardrequest",
+    "app/vendoronboardsupplier",
+    "app/vendoronboarddocument",
+    "app/vendoronboardapproval"
+  ]
+}

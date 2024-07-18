@@ -1,0 +1,23 @@
+/* Enter your custom styles here */
+.coulmnwidth{
+    padding-left: 10px
+}
+.paddingcolumns{
+    padding-left: 50px;
+}
+.paddingItems{
+    padding-left: 150px;
+}
+
+.paddingInputs{
+    padding-left: 10px;
+}
+.columsheight{
+    width: 600px;
+}
+.colunm1style{
+ position: sticky;
+ left:0;
+ z-index : 1;
+ background: white;
+}

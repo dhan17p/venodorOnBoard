@@ -1,0 +1,198 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "vendoronboarddocument",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.14.1",
+      "toolsId": "33d33f08-3672-4731-b2c8-de2d665bf3e2"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/vob/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "vendoronboarddocumentsem-display": {
+          "semanticObject": "vendoronboarddocumentsem",
+          "action": "display",
+          "title": "{{flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.126.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "vendoronboarddocument.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "vobDocumentList",
+          "target": "vobDocumentList"
+        },
+        {
+          "pattern": "vobDocument({key}):?query:",
+          "name": "vobDocumentObjectPage",
+          "target": "vobDocumentObjectPage"
+        }
+      ],
+      "targets": {
+        "vobDocumentList": {
+          "type": "Component",
+          "id": "vobDocumentList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/vobDocument",
+              "variantManagement": "Page",
+              "navigation": {
+                "vobDocument": {
+                  "detail": {
+                    "route": "vobDocumentObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "vobDocumentObjectPage": {
+          "type": "Component",
+          "id": "vobDocumentObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/vobDocument",
+              "navigation": {},
+              "content": {
+                "body": {
+                  "sections": {
+                    "Vendoronboard": {
+                      "template": "vendoronboarddocument.ext.fragment.Vendoronboard",
+                      "title": "Vendor on Board"
+                    },
+                    "Commentfragment": {
+                      "template": "vendoronboarddocument.ext.fragment.Commentfragment",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Vendoronboard"
+                      },
+                      "title": "Comment"
+                    },
+                    "WOrkflowhistory": {
+                      "template": "vendoronboarddocument.ext.fragment.WOrkflowhistory",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Commentfragment"
+                      },
+                      "title": "WorkflowHistory"
+                    },
+                    "Attachmentfragment": {
+                      "template": "vendoronboarddocument.ext.fragment.Attachmentfragment",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Commentfragment"
+                      },
+                      "title": "Attachements"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "vendorOnBoardApprouter"
+  }
+}

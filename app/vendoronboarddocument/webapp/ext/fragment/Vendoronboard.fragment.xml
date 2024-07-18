@@ -1,0 +1,194 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:macros="sap.fe.macros">
+    <VBox core:require="{ handler: 'vendoronboarddocument/ext/fragment/Vendoronboard'}">
+        <!-- <Button text="Vendoronboard" press="handler.onPress" /> -->
+        <ScrollContainer width="100%">
+            <HBox >
+                <!-- <Table id="parentTable" class="tableClass">
+                    <columns >
+                        <Column width ="500px" class="columsheight" styleClass="colunm1style">
+                            <header  >
+                                <HBox class="coulmnwidth">
+                                    <Text text="MGSP Part No" wrapping="false" />
+                                    <Text text="Existing MGSP PO Price" class='paddingcolumns' wrapping="false" />
+                                    <Text text="Target Price" class='paddingcolumns' wrapping="false" />
+                                </HBox>
+                            </header>
+                        </Column>
+                        <Column width ="250px">
+                            <Text text="supplier1"></Text>
+                        </Column>
+                        <Column width ="250px">
+                            <Text text="supplier2"></Text>
+                        </Column>
+                        <Column width ="250px">
+                            <Text text="supplier3"></Text>
+                        </Column>
+
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <HBox>
+                                    <Text text="ddd" wrapping="false" />
+                                    <Text text="ddd" wrapping="false" class="paddingItems" />
+                                    <Text text="3rd" wrapping="false" class="paddingItems" />
+                                </HBox>
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="Total Landed Investment - Settled (Rs. lacs)" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="Total Business value (Rs. Lac) 1st 12months" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="Amount to be paid to M/s RKR (Lac) 1st 12 months" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="Amount to be paid to M/s RKR (Lac) 2nd + 3rd Year" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="YOY Reduction for 3 yrs (After SOP + 1 year)" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="FX Base Rate" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="Finished Weight of Part / System (kg)" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="DTB Packaging Cost Rs" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="Inco Terms" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="Payment Terms" />
+                                <Input ></Input>
+                                <Input ></Input>
+                                <Input ></Input>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table> -->
+                <Table id="secondtablesss" fixedLayout="false" width="30vw">
+                    <columns>
+                        <Column width="400px">
+                            <Text text="demooo"></Text>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem  >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                        <ColumnListItem >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+                <HBox class="testoverflow" >
+                <Table id="secondtabl22e" fixedLayout="false" width="30vw">
+                    <columns>
+                        <Column width="400px">
+                            <Text text="demooo"></Text>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                        <ColumnListItem >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+                <Table id="secondtable" fixedLayout="false" width="30vw">
+                    <columns>
+                        <Column width="400px">
+                            <Text text="demooo"></Text>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                        <ColumnListItem >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+                <Table id="secondtable6" fixedLayout="false" width="30vw">
+                    <columns>
+                        <Column width="400px" >
+                            <Text text="demooo"></Text>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                        <ColumnListItem >
+                            <Text text="dddd"></Text>
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+                </HBox>
+            </HBox>
+        </ScrollContainer>
+    </VBox>
+</core:FragmentDefinition>
