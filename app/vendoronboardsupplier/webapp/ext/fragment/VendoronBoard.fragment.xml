@@ -8,7 +8,7 @@
             <Table id="parentTable" class="tableClass">
             </Table>
         </VBox>
-        <HBox >
+        <HBox class="rightHboxClass">
 
         </HBox>
         <!-- </HBox> -->

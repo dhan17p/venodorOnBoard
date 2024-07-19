@@ -5,8 +5,10 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 	"sap/m/ColumnListItem",
 	"sap/m/Text",
 	"sap/m/Input",
-	"sap/m/Button"
-], function (ControllerExtension, HBox, Table, Column, ColumnListItem, Text, Input, Button) {
+	"sap/m/Button",
+	"sap/m/Dialog",
+	"sap/m/CheckBox"
+], function (ControllerExtension, HBox, Table, Column, ColumnListItem, Text, Input, Button, Dialog, CheckBox) {
 	'use strict';
 
 	return ControllerExtension.extend('vendoronboardsupplier.ext.controller.Objectpage', {
@@ -60,12 +62,114 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 
 					///////////////////////////////////
 
-
+					//Add Vendor Button
 					headerActions.addAction(new Button({
 						text: `Add Vendor`,
 						type: 'Accept',
 						press: function (oEvent) {
 							debugger
+							if (!this.oDefaultDialog) {
+								this.oDefaultDialog = new Dialog({
+									title: "Add Vendor",
+									content: new HBox({
+										justifyContent: "SpaceBetween",
+										items: [
+											new Text({ text: "Vendor Name" }),
+											new Input()
+										]
+									}),
+									beginButton: new Button({
+										type: "Emphasized",
+										text: "OK",
+										press: function (oEvent) {
+											debugger
+
+											var vendorName = oEvent.getSource().getParent().getContent()[0].getItems()[1].getValue();
+
+											var newSupplier = new Table({
+												width: "20vw",
+												columns: new Column({
+													header: [
+														new HBox({
+
+															items: [
+																new sap.ui.core.Icon({
+																	src: 'sap-icon://circle-task',
+																	height: "10px",
+																	press: function (oEvent) {
+																		debugger
+																		if (oEvent.getSource().getSrc() == "sap-icon://circle-task") {
+																			oEvent.getSource().setSrc("sap-icon://bo-strategy-management")
+																		}
+																		else {
+																			oEvent.getSource().setSrc("sap-icon://circle-task")
+																		}
+																	}
+																}),
+																new Text({ text: `${vendorName}` })
+															]
+														})
+													]
+												})
+											});
+											for (let i = 0; i < otable.getItems().length; i++) {
+												var oColumnListItem6 = new ColumnListItem({
+													cells: [
+														new Input()
+													]
+												})
+												newSupplier.addItem(oColumnListItem6);
+											}
+											// Add the newly created column to the table
+											oHboxSupplier.addItem(newSupplier);
+
+											this.oDefaultDialog.close();
+										}.bind(this)
+									}),
+									endButton: new Button({
+										text: "Close",
+										press: function () {
+											this.oDefaultDialog.close();
+										}.bind(this)
+									})
+								})
+
+								// to get access to the controller's model
+								// this.getView().addDependent(this.oDefaultDialog);
+							}
+
+							this.oDefaultDialog.open();
+							// var newSupplier = new Table({
+							// 	width: "20vw",
+							// 	columns: new Column({
+							// 		header: new Text({ text: `${supplier.suplier}` })
+							// 	}),
+							// 	items: [
+							// 		new ColumnListItem({
+							// 			cells: [
+							// 				new Input()
+							// 			]
+							// 		})
+							// 	]
+							// });
+							// // Add the newly created column to the table
+							// oHboxSupplier.addItem(newSupplier);
+						}
+					}))
+
+					//Delete Button
+					headerActions.addAction(new Button({
+						text: `Delete`,
+						type: 'Reject',
+						press: function (oEvent) {
+							debugger
+							var oInnerHboxItem = mainVbox.getItems()[1].getItems();
+							for (let i = 0; i < oInnerHboxItem.length; i++) {
+								if (oInnerHboxItem[i].getColumns()[0].getHeader().getItems()[0].getSrc() == "sap-icon://bo-strategy-management") {
+									oInnerHboxItem[i].destroy();
+								}
+
+							}
 						}
 					}))
 
@@ -73,21 +177,22 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 						width: "500px",
 						header: new HBox({
 							items: [
-								new Text({ text: "MGSP Part No", wrapping: false }),
-								new Text({ text: "Existing MGSP PO Price", wrapping: false, class: "paddingcolumns" }).addStyleClass("paddingcolumns"),
-								new Text({ text: "Target Price", wrapping: false, class: "paddingcolumns" }).addStyleClass("paddingcolumns")
+								new Text({ text: "MGSP Part No" }),
+								new Text({ text: "Existing MGSP PO Price", class: "paddingcolumns" }).addStyleClass("paddingcolumns"),
+								new Text({ text: "Target Price", class: "paddingcolumns" }).addStyleClass("paddingcolumns")
 							],
 							class: "coulmnwidth"
 						}),
-						styleClass: "colunm1style"
+						// styleClass: "colunm1style"
 					});
 					otable.addColumn(firstColumn);
 					for (let partdetails of finalsupp.yoy_details) {
 						var oColumnListItem = new ColumnListItem({
 							cells: [
 								new HBox({
+									alignItems: "Center",
 									items: [
-										new Text({ text: partdetails.MGSP_Part_Nos, wrapping: false }),
+										new Text({ text: partdetails.MGSP_Part_Nos }),
 										new Input().addStyleClass("paddingItems"),
 										new Input().addStyleClass("paddingItems"),
 									]
@@ -100,7 +205,7 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 					for (let field of fields) {
 						var oColumnListItem1 = new ColumnListItem({
 							cells: [
-								new Text({ text: `${field}`, wrapping: false }),
+								new Input({ value: `${field}` }).addStyleClass("InputToTextClass"),
 							]
 						})
 						otable.addItem(oColumnListItem1);
@@ -111,26 +216,86 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 							new HBox({
 								justifyContent: "SpaceBetween",
 								items: [
-									new Text({ text: "Capex", wrapping: false }),
-									new Text({ text: "Tooling / Dies / Moulds / Fixtures", wrapping: false })
+									new Input({ value: "Capex", editable: false }).addStyleClass("InputToTextClass"),
+									new Input({ value: "Tooling / Dies / Moulds / Fixtures", editable: false }).addStyleClass("InputToTextClass")
 								]
 							})
 						]
-					})
+					}).addStyleClass("capexUpperSectionClass")
 					otable.addItem(oColumnListItem1);
 					var oColumnListItem2 = new ColumnListItem({
 						cells: [
 							new HBox({
 								justifyContent: "SpaceBetween",
 								items: [
-									new Text({ text: " ", wrapping: false }),
-									new Text({ text: "Inspection Gauges", wrapping: false })
+									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
+									new Input({ value: "Inspection Gauges", editable: false }).addStyleClass("InputToTextClass")
 								]
 							})
 						]
 					})
 					otable.addItem(oColumnListItem2);
+					var oColumnListItem3 = new ColumnListItem({
+						cells: [
+							new HBox({
+								justifyContent: "SpaceBetween",
+								items: [
+									new Input({ value: "Revenue", editable: false }).addStyleClass("InputToTextClass"),
+									new Input({ value: "Testing / Validation", editable: false }).addStyleClass("InputToTextClass"),
+								]
+							})
+						]
+					})
+					otable.addItem(oColumnListItem3);
 
+					var oColumnListItem4 = new ColumnListItem({
+						cells: [
+							new HBox({
+								justifyContent: "SpaceBetween",
+								items: [
+									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
+									new Input({ value: "Engg Fees", editable: false }).addStyleClass("InputToTextClass"),
+								]
+							})
+						]
+					})
+					otable.addItem(oColumnListItem4);
+					var oColumnListItem5 = new ColumnListItem({
+						cells: [
+							new HBox({
+								justifyContent: "SpaceBetween",
+								items: [
+									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
+									new Input({ value: "Proto Tooling", editable: false }).addStyleClass("InputToTextClass")
+								]
+							})
+						]
+					})
+					otable.addItem(oColumnListItem5);
+					var oColumnListItem6 = new ColumnListItem({
+						cells: [
+							new HBox({
+								justifyContent: "SpaceBetween",
+								items: [
+									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
+									new Input({ value: "Logistics Trollies", editable: false }).addStyleClass("InputToTextClass"),
+								]
+							})
+						]
+					})
+					otable.addItem(oColumnListItem6);
+					var oColumnListItem6 = new ColumnListItem({
+						cells: [
+							new HBox({
+								justifyContent: "SpaceBetween",
+								items: [
+									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
+									new Input({ value: "Total Landed Investment Settled", editable: false }).addStyleClass("InputToTextClass"),
+								]
+							})
+						]
+					})
+					otable.addItem(oColumnListItem6);
 
 
 
@@ -139,9 +304,36 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 						var newSupplier = new Table({
 							width: "20vw",
 							columns: new Column({
-								header: new Text({ text: `${supplier.suplier}` })
+								header: [
+									new HBox({
+										items: [
+											new sap.ui.core.Icon({
+												src: 'sap-icon://circle-task',
+												height: "10px",
+												press: function (oEvent) {
+													debugger
+													if (oEvent.getSource().getSrc() == "sap-icon://circle-task") {
+														oEvent.getSource().setSrc("sap-icon://bo-strategy-management")
+													}
+													else {
+														oEvent.getSource().setSrc("sap-icon://circle-task")
+													}
+												}
+											}),
+											new Text({ text: `${supplier.suplier}` })
+										]
+									})
+								]
 							})
 						});
+						for (let i = 0; i < otable.getItems().length; i++) {
+							var oColumnListItem6 = new ColumnListItem({
+								cells: [
+									new Input()
+								]
+							})
+							newSupplier.addItem(oColumnListItem6);
+						}
 						// Add the newly created column to the table
 						oHboxSupplier.addItem(newSupplier);
 					}
