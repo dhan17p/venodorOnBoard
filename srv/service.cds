@@ -24,4 +24,6 @@ service VOBService {
 
     //function call
      function vendordetails(status : String) returns String;
+     function commentfunction(status : String) returns String;
+
 }
