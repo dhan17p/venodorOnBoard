@@ -168,6 +168,15 @@
           }
         }
       }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController#vendoronboardrequest::vobRequestObjectPage": {
+            "controllerName": "vendoronboardrequest.ext.controller.Objectpage"
+          }
+        }
+      }
     }
   },
   "sap.fiori": {

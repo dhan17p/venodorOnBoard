@@ -185,6 +185,15 @@
           }
         }
       }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController#vendoronboarddocument::vobDocumentObjectPage": {
+            "controllerName": "vendoronboarddocument.ext.controller.Objectpage"
+          }
+        }
+      }
     }
   },
   "sap.fiori": {

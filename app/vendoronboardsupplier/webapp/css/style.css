@@ -1,46 +1,70 @@
 /* Enter your custom styles here */
-.coulmnwidth{
+.coulmnwidth {
     padding-left: 10px
 }
-.paddingcolumns{
-    padding-left: 50px;
-}
-.paddingItems{
+
+.paddingcolumns {
     padding-left: 50px;
 }
 
-.paddingInputs{
+.paddingItems {
+    padding-left: 50px;
+}
+
+.paddingInputs {
     padding-left: 10px;
 }
-.columsheight{
+
+.columsheight {
     width: 600px;
 }
-.colunm1style{
- position: sticky;
- left:0;
- z-index : 1;
- background: white;
+
+.colunm1style {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: white;
 }
 
 
-.InputToTextClass *{
+.InputToTextClass * {
     background: white !important;
 }
 
-.sapUiIconPointer{
-   padding-right: 5px !important;
-    cursor: pointer ;
+.sapUiIconPointer {
+    padding-right: 5px !important;
+    cursor: pointer;
 }
 
-.rightHboxClass{
-    width: 60% ;
-    overflow-x: scroll ;
+.rightHboxClass {
+    width: 60%;
+    overflow-x: scroll;
     scrollbar-width: thin;
 }
 
-.capexUpperSectionClass{
+.capexUpperSectionClass {
     border: 1px solid black !important;
     border-style: solid;
-  border-width: 5px;
+    border-width: 5px;
     /* background-color: blue !important; */
+}
+
+.tableClass {
+    border: 1px solid black;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 5px;
+}
+
+.tableClass>* .sapMText {
+    white-space: nowrap;
+    /* Prevent line breaks */
+    overflow: hidden;
+    /* Hide overflow */
+    text-overflow: ellipsis;
+    /* Show ellipses */
+    max-width: 150px;
+    /* Adjust as needed for your layout */
+    display: inline-block;
+    /* Ensure it doesn't span the full width */
 }

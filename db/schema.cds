@@ -1,4 +1,5 @@
 namespace db;
+
 using {
     cuid,
     managed
@@ -20,32 +21,39 @@ entity VOB {
         Development_Supply_Agreement_Whether_Signed : String;
         Tooling_Agreement_signed                    : String;
         Supplier_Code_of_Conduct                    : String;
-           SequentialVobId           : String;
-        status                                      : String default 'n';
+        users                                       : String;
+        startedAt                                   : String;
+        SequentialVobId                             : String;
+        flowStatus                                  : String default 'New';
         vob_yoy                                     : Composition of many YOY
                                                           on vob_yoy.vob_id = id;
         vob_suplier                                 : Composition of many potential_suplier
                                                           on vob_suplier.id = id;
-        vob_comments              : Composition of many comment
-                                        on vob_comments.id = id;
-        vob_files                 : Association to many Files
-                                        on vob_files.vob_id = id;
-        vob_to_Workflow_History   : Association to many Workflow_History
-                                        on vob_to_Workflow_History.vob_id = id;
+        vob_comments                                : Composition of many comment
+                                                          on vob_comments.id = id;
+        vob_files                                   : Association to many Files
+                                                          on vob_files.vob_id = id;
+        vob_to_Workflow_History                     : Association to many Workflow_History
+                                                          on vob_to_Workflow_History.vob_id = id;
 }
+
 entity YOY {
-    key id                  : UUID;
-        vob_id              : UUID;
-        MGSP_Part_Nos       : String;
-        proposed_vf_part_no : String;
-        application_model   : String;
-        f24                 : String;
-        f25                 : String;
-        f26                 : String;
-        total               : String;
-        yoy_vov             : Association to VOB;
+    key id                     : UUID;
+        vob_id                 : UUID;
+        MGSP_Part_Nos          : String;
+        proposed_vf_part_no    : String;
+        application_model      : String;
+        f24                    : String;
+        f25                    : String;
+        f26                    : String;
+        total                  : String;
+        Existing_MGSP_PO_Price : String;
+        target_price           : String;
+        state                  : Boolean;
+        yoy_vov                : Association to VOB;
 }
-entity potential_suplier{
+
+entity potential_suplier {
     key id_main                                : UUID;
         id                                     : UUID;
         suplier                                : String;
@@ -53,6 +61,7 @@ entity potential_suplier{
                                                      on potentialsuplierscr_to_supplierdetails.id_supplier = id_main;
 
 }
+
 entity supplierdetails : managed {
     key supplierdetailsid                       : UUID;
         id_supplier                             : UUID;
@@ -60,11 +69,13 @@ entity supplierdetails : managed {
         value                                   : String;
         supplierdetails_to_potentialsuplierscr1 : Association to many potential_suplier;
 };
+
 entity comment : managed {
     key id_com  : UUID;
         id      : UUID;
         comment : String;
 }
+
 entity Files : cuid, managed {
     // key id1 : String;
     vob_id           : UUID;
@@ -81,6 +92,7 @@ entity Files : cuid, managed {
     // contentString    : LargeString;
     Files_to_screen4 : Association to one VOB;
 }
+
 entity Workflow_History {
     key vob_id          : UUID;
     key employee_id     : String;
@@ -99,6 +111,7 @@ entity Master_workflow {
         level       : String;
 
 }
+
 entity Folder {
     key id          : String;
         Folder_Name : String;

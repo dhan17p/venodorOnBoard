@@ -164,6 +164,16 @@
                       "title": "Comment"
                     }
                   }
+                },
+                "footer": {
+                  "actions": {
+                    "submitid": {
+                      "press": "vendoronboardsupplier.ext.controller.Submithandler.submit",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "Submit"
+                    }
+                  }
                 }
               }
             }

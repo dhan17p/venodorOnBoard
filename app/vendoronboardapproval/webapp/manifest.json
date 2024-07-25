@@ -92,7 +92,11 @@
       }
     },
     "resources": {
-      "css": []
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
     },
     "routing": {
       "config": {},
@@ -174,6 +178,15 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController#vendoronboardapproval::vobApprovalObjectPage": {
+            "controllerName": "vendoronboardapproval.ext.controller.Objectpage"
           }
         }
       }

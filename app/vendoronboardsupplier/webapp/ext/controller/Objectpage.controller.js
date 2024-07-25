@@ -7,9 +7,14 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 	"sap/m/Input",
 	"sap/m/Button",
 	"sap/m/Dialog",
-	"sap/m/CheckBox"
-], function (ControllerExtension, HBox, Table, Column, ColumnListItem, Text, Input, Button, Dialog, CheckBox) {
+	"sap/m/CheckBox",
+	"sap/m/MessageToast",
+	"sap/ui/model/json/JSONModel",
+	"sap/m/library",
+], function (ControllerExtension, HBox, Table, Column, ColumnListItem, Text, Input, Button, Dialog, CheckBox, MessageToast, JSONModel, mobileLibrary) {
 	'use strict';
+
+	var DialogType = mobileLibrary.DialogType;
 
 	return ControllerExtension.extend('vendoronboardsupplier.ext.controller.Objectpage', {
 		// this section allows to extend lifecycle hooks or hooks provided by Fiori elements
@@ -60,8 +65,6 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 					var result1 = oFunction1.getBoundContext().getValue().value;
 					var finalsupp = JSON.parse(result1);
 
-					///////////////////////////////////
-
 					//Add Vendor Button
 					headerActions.addAction(new Button({
 						text: `Add Vendor`,
@@ -71,6 +74,7 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 							if (!this.oDefaultDialog) {
 								this.oDefaultDialog = new Dialog({
 									title: "Add Vendor",
+									type: DialogType.Message,
 									content: new HBox({
 										justifyContent: "SpaceBetween",
 										items: [
@@ -111,7 +115,7 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 														})
 													]
 												})
-											});
+											}).addStyleClass("tableClass");
 											for (let i = 0; i < otable.getItems().length; i++) {
 												var oColumnListItem6 = new ColumnListItem({
 													cells: [
@@ -168,8 +172,8 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 								if (oInnerHboxItem[i].getColumns()[0].getHeader().getItems()[0].getSrc() == "sap-icon://bo-strategy-management") {
 									oInnerHboxItem[i].destroy();
 								}
-
 							}
+							MessageToast.show("Vendor Delete SuccessFully")
 						}
 					}))
 
@@ -177,129 +181,76 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 						width: "500px",
 						header: new HBox({
 							items: [
-								new Text({ text: "MGSP Part No" }),
-								new Text({ text: "Existing MGSP PO Price", class: "paddingcolumns" }).addStyleClass("paddingcolumns"),
-								new Text({ text: "Target Price", class: "paddingcolumns" }).addStyleClass("paddingcolumns")
+								new Text({ text: "MGSP Part No", tooltip: "MGSP Part No" }),
+								new Text({ text: "Existing MGSP PO Price", tooltip: "Existing MGSP PO Price" }).addStyleClass("paddingcolumns"),
+								new Text({ text: "Target Price",tooltip:"Target Price" }).addStyleClass("paddingcolumns")
 							],
 							class: "coulmnwidth"
 						}),
 						// styleClass: "colunm1style"
 					});
 					otable.addColumn(firstColumn);
-					for (let partdetails of finalsupp.yoy_details) {
+					for (let i = 0; i < finalsupp.yoy_details.length; i++) {
+						let partdetails = finalsupp.yoy_details[i];
 						var oColumnListItem = new ColumnListItem({
 							cells: [
 								new HBox({
 									alignItems: "Center",
 									items: [
-										new Text({ text: partdetails.MGSP_Part_Nos }),
+										new Text({ text: partdetails.MGSP_Part_Nos, tooltip: partdetails.MGSP_Part_Nos }),
 										new Input().addStyleClass("paddingItems"),
 										new Input().addStyleClass("paddingItems"),
 									]
 								}),
 							]
-						})
+						});
+
+						// Set the model directly to the ColumnListItem
+						var modelrow = new JSONModel({
+							rowid: partdetails.id
+						});
+						oColumnListItem.setModel(modelrow, 'rowid');
+
+						// Add the ColumnListItem to the table
 						otable.addItem(oColumnListItem);
 					}
 
 					for (let field of fields) {
 						var oColumnListItem1 = new ColumnListItem({
 							cells: [
-								new Input({ value: `${field}` }).addStyleClass("InputToTextClass"),
+								new Input({ value: `${field}`, editable:false }).addStyleClass("InputToTextClass"),
 							]
 						})
 						otable.addItem(oColumnListItem1);
 
 					}
-					var oColumnListItem1 = new ColumnListItem({
-						cells: [
-							new HBox({
-								justifyContent: "SpaceBetween",
-								items: [
-									new Input({ value: "Capex", editable: false }).addStyleClass("InputToTextClass"),
-									new Input({ value: "Tooling / Dies / Moulds / Fixtures", editable: false }).addStyleClass("InputToTextClass")
-								]
-							})
-						]
-					}).addStyleClass("capexUpperSectionClass")
-					otable.addItem(oColumnListItem1);
-					var oColumnListItem2 = new ColumnListItem({
-						cells: [
-							new HBox({
-								justifyContent: "SpaceBetween",
-								items: [
-									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
-									new Input({ value: "Inspection Gauges", editable: false }).addStyleClass("InputToTextClass")
-								]
-							})
-						]
-					})
-					otable.addItem(oColumnListItem2);
-					var oColumnListItem3 = new ColumnListItem({
-						cells: [
-							new HBox({
-								justifyContent: "SpaceBetween",
-								items: [
-									new Input({ value: "Revenue", editable: false }).addStyleClass("InputToTextClass"),
-									new Input({ value: "Testing / Validation", editable: false }).addStyleClass("InputToTextClass"),
-								]
-							})
-						]
-					})
-					otable.addItem(oColumnListItem3);
+					function createColumnListItem(leftValue, rightValue) {
+						return new ColumnListItem({
+							cells: [
+								new HBox({
+									justifyContent: "SpaceBetween",
+									items: [
+										new Input({ value: leftValue, editable: false }).addStyleClass("InputToTextClass"),
+										new Input({ value: rightValue, editable: false }).addStyleClass("InputToTextClass")
+									]
+								})
+							]
+						}).addStyleClass("capexUpperSectionClass");
+					}
 
-					var oColumnListItem4 = new ColumnListItem({
-						cells: [
-							new HBox({
-								justifyContent: "SpaceBetween",
-								items: [
-									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
-									new Input({ value: "Engg Fees", editable: false }).addStyleClass("InputToTextClass"),
-								]
-							})
-						]
-					})
-					otable.addItem(oColumnListItem4);
-					var oColumnListItem5 = new ColumnListItem({
-						cells: [
-							new HBox({
-								justifyContent: "SpaceBetween",
-								items: [
-									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
-									new Input({ value: "Proto Tooling", editable: false }).addStyleClass("InputToTextClass")
-								]
-							})
-						]
-					})
-					otable.addItem(oColumnListItem5);
-					var oColumnListItem6 = new ColumnListItem({
-						cells: [
-							new HBox({
-								justifyContent: "SpaceBetween",
-								items: [
-									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
-									new Input({ value: "Logistics Trollies", editable: false }).addStyleClass("InputToTextClass"),
-								]
-							})
-						]
-					})
-					otable.addItem(oColumnListItem6);
-					var oColumnListItem6 = new ColumnListItem({
-						cells: [
-							new HBox({
-								justifyContent: "SpaceBetween",
-								items: [
-									new Input({ value: " ", editable: false }).addStyleClass("InputToTextClass"),
-									new Input({ value: "Total Landed Investment Settled", editable: false }).addStyleClass("InputToTextClass"),
-								]
-							})
-						]
-					})
-					otable.addItem(oColumnListItem6);
+					const items = [
+						["Capex", "Tooling / Dies / Moulds / Fixtures"],
+						[" ", "Inspection Gauges"],
+						["Revenue", "Testing / Validation"],
+						[" ", "Engg Fees"],
+						[" ", "Proto Tooling"],
+						[" ", "Logistics Trollies"],
+						[" ", "Total Landed Investment Settled"]
+					];
 
-
-
-
+					items.forEach(([left, right]) => {
+						otable.addItem(createColumnListItem(left, right));
+					});
 					for (let supplier of finalsupp.supplier) {
 						var newSupplier = new Table({
 							width: "20vw",
@@ -325,7 +276,12 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 									})
 								]
 							})
-						});
+						}).addStyleClass("tableClass");
+						var model = new JSONModel({
+							supplierid: `${supplier.id_main}`
+						})
+						newSupplier.setModel(model, 'supplier_id');
+
 						for (let i = 0; i < otable.getItems().length; i++) {
 							var oColumnListItem6 = new ColumnListItem({
 								cells: [
@@ -337,101 +293,9 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 						// Add the newly created column to the table
 						oHboxSupplier.addItem(newSupplier);
 					}
-
-
-
-					// 	var oModel = this.base.getExtensionAPI().getModel();
-					// 	// var table = this.getInterface().getView().mAggregations.content[0].mAggregations.sections[0].mAggregations._grid.mAggregations.content[0].mAggregations.blocks[0].mAggregations.content.mAggregations.items[0].mAggregations.content[0]
-					// 	var table = sap.ui.getCore().byId("vendoronboardsupplier::vobSupplierObjectPage--fe::CustomSubSection::VendoronBoard--parentTable");
-					// 	var firstColumn = new sap.m.Column({
-					// 		width: "500px",
-					// 		header: new HBox({
-					// 			items: [
-					// 				new Text({ text: "MGSP Part No", wrapping: false }),
-					// 				new Text({ text: "Existing MGSP PO Price", wrapping: false, class: "paddingcolumns" }).addStyleClass("paddingcolumns"),
-					// 				new Text({ text: "Target Price", wrapping: false, class: "paddingcolumns" }).addStyleClass("paddingcolumns")
-					// 			],
-					// 			class: "coulmnwidth"
-					// 		}),
-					// 		styleClass: "colunm1style"
-					// 	});		
-					// 	var secondColumn = new sap.m.Column({
-					// 		width: "250px",
-					// 		header: new sap.m.Text({ text: "supplier1" })
-					// 	});
-					// 	// firstColumn.mAggregations.header.mAggregations.items[1].addStyleClass("paddingcolumns")
-					// 	// firstColumn.mAggregations.header.mAggregations.items[2].addStyleClass("paddingcolumns")
-					// 	table.addColumn(firstColumn)
-					// 	table.addColumn(secondColumn)
-					// debugger
-					// var id ='70ac0c95-4022-4da3-b6e6-4aea987d03f7'
-					// 	let oFunction1 = this.getView().getModel().bindContext("/vendordetails(...)");
-					// 	var statusval1 = JSON.stringify({ id: id, status: "vobsupplier" })
-					// 	oFunction1.setParameter("status", statusval1)
-					// 	await oFunction1.execute()
-					// 	debugger
-					// 	var result1 = oFunction1.getBoundContext().getValue().value;
-					// 	var finalsupp = JSON.parse(result1);
-					// 	debugger;
-					// 	for(let supplier of finalsupp.supplier){
-					// 		let newColumn = new sap.m.Column({
-					// 			width: "250px",
-					// 			header: new sap.m.Text({ text: supplier.supplier })
-					// 		});
-					// 		// Add the newly created column to the table
-					// 		table.addColumn(newColumn);
-					// 	}
-					// 	for(let partdetails of finalsupp.yoy_details){
-					// 		var oColumnListItem = new ColumnListItem({
-					// 			cells:[
-					// 				new HBox({
-					// 					items: [
-					// 						new Text({ text: partdetails.MGSP_Part_Nos, wrapping: false }),
-					// 						new Input().addStyleClass("paddingItems"),
-					// 						new Input().addStyleClass("paddingItems"),
-					// 					]
-					// 				}),
-					// 				new sap.m.Input(),
-					// 				new sap.m.Input(),
-					// 				new sap.m.Input()
-					// 			]
-					// 		})
-					// 		table.addItem(oColumnListItem);
-					// 	}
-					// 	// for(let partdetails of finalsupp.yoy_details){
-					// 	// 	var hbox = new HBox();
-					// 	// // 	let columnListItem = new sap.m.ColumnListItem();
-					// 	// // }
-					// 	// let columnListItem = new sap.m.ColumnListItem();
-					// 	// let cells = new sap.m.Input();
-					// 	// // cells.addItems(hbox);
-					// 	// var content = new sap.m.Text({
-					// 	// 	text: "dddd"
-					// 	// });
-					// 	// // hbox.addItems(content);
-					// 	// columnListItem.addItems(content);
-					// 	// table.addItems(columnListItem);
-					// 	var oColumnListItem = new sap.m.ColumnListItem({
-					// 		cells: [
-					// 			new HBox({
-					// 				items: [
-					// 					new sap.m.Text({ text: "ddd", wrapping: false }),
-					// 					new sap.m.Text({ text: "ddd", wrapping: false}).addStyleClass("paddingItems"),
-					// 					new sap.m.Text({ text: "3rd", wrapping: false, class: "paddingItems" })
-					// 				]
-					// 			}),
-					// 			new sap.m.Input(),
-					// 			new sap.m.Input(),
-					// 			new sap.m.Input()
-					// 		]
-					// 	});
-
-					// Add the ColumnListItem to the table
-					// table.addItem(oColumnListItem);	
-
-
 				}
 			}
+
 		}
 	});
 });

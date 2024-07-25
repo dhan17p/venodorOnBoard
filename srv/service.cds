@@ -25,5 +25,7 @@ service VOBService {
     //function call
      function vendordetails(status : String) returns String;
      function commentfunction(status : String) returns String;
+     function onSubmitFunc(status:String) returns String;
+     function documentscreenfunc(status:String) returns String;
 
 }
