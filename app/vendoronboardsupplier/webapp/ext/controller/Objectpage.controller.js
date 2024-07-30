@@ -54,6 +54,11 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 
 					var mainVbox = this.base.getView().getContent()[0].getSections()[0].getSubSections()[0].mAggregations._grid.mAggregations.content[0].getContent();
 					mainVbox.getItems()[0].setWidth("40vw")
+					debugger
+					mainVbox.getItems()[0].getItems()[0].destroyColumns();
+						mainVbox.getItems()[0].getItems()[0].destroyItems();
+						mainVbox.getItems()[1].destroyItems();
+
 					var oHboxSupplier = mainVbox.getItems()[1];
 					var otable = mainVbox.getItems()[0].getItems()[0];
 					var id = '70ac0c95-4022-4da3-b6e6-4aea987d03f7'

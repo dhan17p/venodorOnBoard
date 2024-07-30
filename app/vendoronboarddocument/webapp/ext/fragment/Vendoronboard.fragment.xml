@@ -2,8 +2,8 @@
     xmlns="sap.m"
     xmlns:macros="sap.fe.macros">
     <HBox core:require="{ handler: 'vendoronboarddocument/ext/fragment/Vendoronboard'}">
-    
-           <VBox >
+
+        <VBox >
             <Table id="parentTabledocument" class="tableClass">
             </Table>
         </VBox>

@@ -1,8 +1,8 @@
 const cds = require('@sap/cds');
 // const { v4: uuidv4 } = require('uuid');
-const {uuid} =cds.utils
+const { uuid } = cds.utils
 module.exports = cds.service.impl(async function () {
-    let {vobDocument, vobMain, YOY, potentialSuplier, comment, supplierdetails } = this.entities;
+    let { vobDocument, vobMain, YOY, potentialSuplier, comment, supplierdetails } = this.entities;
     this.on('vendordetails', async (req) => {
         console.log("called");
         var reqdata = JSON.parse(req.data.status);
@@ -40,7 +40,7 @@ module.exports = cds.service.impl(async function () {
                     let id_main1 = uuid();
                     const supplier_detail = supplier_details_new[i];
                     // let supplier_new_id = supplier_detail[supplier_detail.length - 1].id;
-                    let supplier_new_id =  uuid();
+                    let supplier_new_id = uuid();
                     if (i == 0) {
                         let supplier_new_name = supplier_detail[supplier_detail.length - 1].name;
                         await INSERT.into(potentialSuplier).entries({
@@ -54,24 +54,29 @@ module.exports = cds.service.impl(async function () {
                         if (j == supplier_details_new[i].length - 1) {
                             break;
                         }
+                        if(supplier_details_new[i][j].value){
                         await INSERT.into(supplierdetails).entries(
                             { id_supplier: supplier_new_id, value_key: supplier_details_new[i][j].value_key, value: supplier_details_new[i][j].value })
+                        }
                     }
                 }
             }
             if (supplier_details_old.length > 0) {
                 for (i = 0; i < supplier_details_old.length; i++) {
                     for (j = 0; j < supplier_details_old[i].length; j++) {
+                        if(supplier_details_old[i][j].value){ 
+                            console.log(supplier_details_old[i][j].value)
                         await INSERT.into(supplierdetails).entries(
                             { id_supplier: supplier_details_old[i][j].id_supplier, value_key: supplier_details_old[i][j].value_key, value: supplier_details_old[i][j].value })
+                        }
                     }
                 }
             }
         }
     })
-    this.on('documentscreenfunc',async (req) =>{
+    this.on('documentscreenfunc', async (req) => {
         var reqdata = JSON.parse(req.data.status);
-        if(reqdata.status == 'getvendordetails'){
+        if (reqdata.status == 'getvendordetails') {
             let partdetails = await SELECT.from(YOY);
             let yoy_details = await SELECT.from(YOY).where({ vob_id: reqdata.id });
             let suppliers = await SELECT.from(potentialSuplier).where({ id: reqdata.id });

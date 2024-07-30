@@ -1,6 +1,6 @@
 
 sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
- 'sap/m/HBox',
+	'sap/m/HBox',
 	"sap/m/Table",
 	"sap/m/Column",
 	"sap/m/ColumnListItem",
@@ -30,6 +30,10 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 				routing: {
 					onAfterBinding: async function () {
 						debugger
+
+						var headerActions = this.base.getView().getContent()[0].getHeaderTitle();
+						headerActions.destroyActions();
+
 						var fields = [
 							"Total Landed Investment - Settled (Rs. lacs)",
 							"Total Business value (Rs. Lac) 1st 12months",
@@ -44,7 +48,12 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 							"Transport Cost"
 						]
 						var mainVbox = this.base.getView().getContent()[0].getSections()[1].getSubSections()[0].mAggregations._grid.mAggregations.content[0].getContent();
-						mainVbox.getItems()[0].setWidth("40vw")
+						mainVbox.getItems()[0].setWidth("40vw");
+						debugger
+	
+						mainVbox.getItems()[0].getItems()[0].destroyColumns();
+						mainVbox.getItems()[0].getItems()[0].destroyItems();
+						mainVbox.getItems()[1].destroyItems();
 						var oHboxDocument = mainVbox.getItems()[1];
 						var otable = mainVbox.getItems()[0].getItems()[0];
 						var id = '70ac0c95-4022-4da3-b6e6-4aea987d03f7'
@@ -154,16 +163,38 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 							}).addStyleClass("tableClass");
 							for (let i = 0; i < otable.getItems().length; i++) {
 								let rowid = otable.getItems()[i].oModels.rowid.oData.rowid;
-								supplier.rel.forEach((relItem) => {
-									if (relItem.value_key === rowid) {
-										var oColumnListItem6 = new ColumnListItem({
-											cells: [
-												new Text({ text: `${relItem.value}` })
-											]
-										})
-										newSupplier.addItem(oColumnListItem6);
-									}
-								});
+								debugger
+								// supplier.rel.forEach((relItem) => {
+								// 	if (relItem.value_key === rowid) {
+								// 		var oColumnListItem6 = new ColumnListItem({
+								// 			cells: [
+								// 				new Text({ text: `${relItem.value}` })
+								// 			]
+								// 		})
+								// 		newSupplier.addItem(oColumnListItem6);
+								// 	}
+								// });
+
+								let itemFound = supplier.rel.find(item => item.value_key == rowid);
+								console.log(itemFound);
+								if (itemFound) {
+									var oColumnListItem6 = new ColumnListItem({
+										cells: [
+											new Text({ text: `${itemFound.value}` })
+										]
+									})
+									newSupplier.addItem(oColumnListItem6);
+								}
+								else {
+									var oColumnListItem6 = new ColumnListItem({
+										cells: [
+											new Text({ text: ` ` })
+										]
+									})
+									newSupplier.addItem(oColumnListItem6);
+								}
+
+
 
 							}
 							// for (const supplierdetail of supplier.rel) {
