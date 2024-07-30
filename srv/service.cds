@@ -21,10 +21,11 @@ service VOBService {
   // entity vobSupplier as projection on db.VOB;
 
 
-  //function call
-  function vendordetails(status : String)      returns String;
-  function commentfunction(status : String)    returns String;
-  function onSubmitFunc(status : String)       returns String;
-  function documentscreenfunc(status : String) returns String;
+    //function call
+     function vendordetails(status : String) returns String;
+     function commentfunction(status : String) returns String;
+     function onSubmitFunc(status:String) returns String;
+     function documentscreenfunc(status:String) returns String;
+     function commentadd(status:String) returns String;
 
 }
