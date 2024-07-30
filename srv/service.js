@@ -11,7 +11,6 @@ module.exports = cds.service.impl(async function () {
         let details_final = JSON.stringify({ yoy_details, supplier });
         return details_final;
     });
-
     this.on('commentfunction', async (req) => {
         console.log("INside Comment Function")
         var reqdata = JSON.parse(req.data.status);
@@ -97,4 +96,5 @@ module.exports = cds.service.impl(async function () {
         }
 
     })
+
 })

@@ -27,5 +27,6 @@ service VOBService {
      function commentfunction(status : String) returns String;
      function onSubmitFunc(status:String) returns String;
      function documentscreenfunc(status:String) returns String;
+     function commentadd(status:String) returns String;
 
 }

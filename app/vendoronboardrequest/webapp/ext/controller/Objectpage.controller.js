@@ -31,6 +31,7 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension'], function (ControllerExten
 						text: "OK",
 						press: async function (oBindingContext, oEvent) {
 							debugger
+							var mainVbox = sap.ui.getCore().byId(jQuery("[id$='mainVboxComment']").attr("id"))
 	
 						}.bind(this)
 					}),
