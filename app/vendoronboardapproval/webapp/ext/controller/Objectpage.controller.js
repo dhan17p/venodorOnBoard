@@ -1,16 +1,16 @@
 sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
-'sap/m/HBox',
-"sap/m/Table",
-"sap/m/Column",
-"sap/m/ColumnListItem",
-"sap/m/Text",
-"sap/m/Input",
-"sap/m/Button",
-"sap/m/Dialog",
-"sap/m/CheckBox",
-"sap/m/MessageToast",
-"sap/ui/model/json/JSONModel",
-"sap/m/library",
+	'sap/m/HBox',
+	"sap/m/Table",
+	"sap/m/Column",
+	"sap/m/ColumnListItem",
+	"sap/m/Text",
+	"sap/m/Input",
+	"sap/m/Button",
+	"sap/m/Dialog",
+	"sap/m/CheckBox",
+	"sap/m/MessageToast",
+	"sap/ui/model/json/JSONModel",
+	"sap/m/library",
 ], function (ControllerExtension, HBox, Table, Column, ColumnListItem, Text, Input, Button, Dialog, CheckBox, MessageToast, JSONModel, mobileLibrary) {
 	'use strict';
 
@@ -18,10 +18,10 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 		// this section allows to extend lifecycle hooks or hooks provided by Fiori elements
 		override: {
 			/**
-             * Called when a controller is instantiated and its View controls (if available) are already created.
-             * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-             * @memberOf vendoronboardapproval.ext.controller.Objectpage
-             */
+			 * Called when a controller is instantiated and its View controls (if available) are already created.
+			 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
+			 * @memberOf vendoronboardapproval.ext.controller.Objectpage
+			 */
 			onInit: function () {
 				// you can access the Fiori elements extensionAPI via this.base.getExtensionAPI
 				var oModel = this.base.getExtensionAPI().getModel();
@@ -44,6 +44,12 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 					]
 					var mainVbox = this.base.getView().getContent()[0].getSections()[1].getSubSections()[0].mAggregations._grid.mAggregations.content[0].getContent();
 					mainVbox.getItems()[0].setWidth("40vw")
+
+					debugger
+					mainVbox.getItems()[0].getItems()[0].destroyColumns();
+					mainVbox.getItems()[0].getItems()[0].destroyItems();
+					mainVbox.getItems()[1].destroyItems();
+
 					var oHboxDocument = mainVbox.getItems()[1];
 					var otable = mainVbox.getItems()[0].getItems()[0];
 					var id = '70ac0c95-4022-4da3-b6e6-4aea987d03f7'
@@ -153,16 +159,35 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension',
 						}).addStyleClass("tableClass");
 						for (let i = 0; i < otable.getItems().length; i++) {
 							let rowid = otable.getItems()[i].oModels.rowid.oData.rowid;
-							supplier.rel.forEach((relItem) => {
-								if (relItem.value_key === rowid) {
-									var oColumnListItem6 = new ColumnListItem({
-										cells: [
-											new Text({ text: `${relItem.value}` })
-										]
-									})
-									newSupplier.addItem(oColumnListItem6);
-								}
-							});
+							// supplier.rel.forEach((relItem) => {
+							// 	if (relItem.value_key === rowid) {
+							// 		var oColumnListItem6 = new ColumnListItem({
+							// 			cells: [
+							// 				new Text({ text: `${relItem.value}` })
+							// 			]
+							// 		})
+							// 		newSupplier.addItem(oColumnListItem6);
+							// 	}
+							// });
+
+							let itemFound = supplier.rel.find(item => item.value_key == rowid);
+							console.log(itemFound);
+							if (itemFound) {
+								var oColumnListItem6 = new ColumnListItem({
+									cells: [
+										new Text({ text: `${itemFound.value}` })
+									]
+								})
+								newSupplier.addItem(oColumnListItem6);
+							}
+							else {
+								var oColumnListItem6 = new ColumnListItem({
+									cells: [
+										new Text({ text: ` ` })
+									]
+								})
+								newSupplier.addItem(oColumnListItem6);
+							}
 
 						}
 						// for (const supplierdetail of supplier.rel) {

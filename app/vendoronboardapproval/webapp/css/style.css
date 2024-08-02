@@ -63,7 +63,7 @@
     /* Hide overflow */
     text-overflow: ellipsis;
     /* Show ellipses */
-    max-width: 150px;
+    /* max-width: 150px; */
     /* Adjust as needed for your layout */
     display: inline-block;
     /* Ensure it doesn't span the full width */
