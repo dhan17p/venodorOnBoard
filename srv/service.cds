@@ -20,6 +20,9 @@ service VOBService {
 
   // entity vobSupplier as projection on db.VOB;
 
+  entity Workflow_History as projection on db.Workflow_History;
+  entity Master_workflow as projection on db.Master_workflow;
+
 
     //function call
      function vendordetails(status : String) returns String;
@@ -27,5 +30,6 @@ service VOBService {
      function onSubmitFunc(status:String) returns String;
      function documentscreenfunc(status:String) returns String;
      function commentadd(status:String) returns String;
+     function workFlowFunction(vob_id:String,level:String,app_rej_by:String,status:String) returns String;
 
 }

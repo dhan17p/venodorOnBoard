@@ -2,7 +2,7 @@ const cds = require('@sap/cds');
 // const { v4: uuidv4 } = require('uuid');
 const { uuid } = cds.utils
 module.exports = cds.service.impl(async function () {
-    let { vobDocument, vobMain, YOY, potentialSuplier, comment, supplierdetails } = this.entities;
+    let { vobDocument, vobMain, YOY, potentialSuplier, comment, supplierdetails, Workflow_History } = this.entities;
     this.on('vendordetails', async (req) => {
         console.log("called");
         var reqdata = JSON.parse(req.data.status);
@@ -53,9 +53,9 @@ module.exports = cds.service.impl(async function () {
                         if (j == supplier_details_new[i].length - 1) {
                             break;
                         }
-                        if(supplier_details_new[i][j].value){
-                        await INSERT.into(supplierdetails).entries(
-                            { id_supplier: supplier_new_id, value_key: supplier_details_new[i][j].value_key, value: supplier_details_new[i][j].value })
+                        if (supplier_details_new[i][j].value) {
+                            await INSERT.into(supplierdetails).entries(
+                                { id_supplier: supplier_new_id, value_key: supplier_details_new[i][j].value_key, value: supplier_details_new[i][j].value })
                         }
                     }
                 }
@@ -63,10 +63,10 @@ module.exports = cds.service.impl(async function () {
             if (supplier_details_old.length > 0) {
                 for (i = 0; i < supplier_details_old.length; i++) {
                     for (j = 0; j < supplier_details_old[i].length; j++) {
-                        if(supplier_details_old[i][j].value){ 
+                        if (supplier_details_old[i][j].value) {
                             console.log(supplier_details_old[i][j].value)
-                        await INSERT.into(supplierdetails).entries(
-                            { id_supplier: supplier_details_old[i][j].id_supplier, value_key: supplier_details_old[i][j].value_key, value: supplier_details_old[i][j].value })
+                            await INSERT.into(supplierdetails).entries(
+                                { id_supplier: supplier_details_old[i][j].id_supplier, value_key: supplier_details_old[i][j].value_key, value: supplier_details_old[i][j].value })
                         }
                     }
                 }
@@ -101,5 +101,64 @@ module.exports = cds.service.impl(async function () {
         }
 
     })
+
+    this.on('workFlowFunction', async (req) => {
+
+        debugger
+        if (req.data.status == "Approved") {
+            await UPDATE(Workflow_History).set({
+                status: 'Approved',
+                approved_By: `${req.data.app_rej_by}`
+            }).where({
+                vob_id: req.data.vob_id,
+                level: req.data.level
+            })
+            let numericVal = parseFloat(req.data.level);
+            numericVal = numericVal + 1;
+            var levelString = numericVal.toFixed(1);
+            var nextLevelWFData = await SELECT.from(Workflow_History).where({ level: `${numericVal}`, vob_id: req.data.vob_id });
+            if (!nextLevelWFData.length) {
+                // await UPDATE(VOB_Screen4, { id: req.data.vob_id }).with({
+                //     flowStatus: 'Approved'
+                // })
+                return 'No level';
+            }
+            var usersdata ='';
+            console.log("Got data from nextLevelWFData");
+            for (let i = 0; i < nextLevelWFData.length; i++) {
+                var empid = nextLevelWFData[i].employee_id;
+                usersdata = usersdata + empid + ' ,';
+            }
+
+            return usersdata;
+        }
+        else {
+            await UPDATE(Workflow_History).set({
+                status: 'Rejected',
+                approved_By: `${req.data.app_rej_by}`
+            }).where({
+                vob_id: req.data.vob_id,
+                level: req.data.level
+            })
+            let numericVal = parseFloat(req.data.level);
+            numericVal = numericVal - 1;
+            var levelString = numericVal.toFixed(1);
+            var nextLevelWFData = await SELECT.from(Workflow_History).where({ level: `${numericVal}`, vob_id: req.data.vob_id });
+            if (!nextLevelWFData.length) {
+                // await UPDATE(VOB_Screen4, { id: req.data.vob_id }).with({
+                //     flowStatus: 'Approved'
+                // })
+                return 'No level';
+            }
+            var usersdata = '';
+            console.log("Got data from nextLevelWFData");
+            for (let i = 0; i < nextLevelWFData.length; i++) {
+                var empid = nextLevelWFData[i].employee_id;
+                usersdata = usersdata + empid + ' ,';
+            }
+            return usersdata;
+        }
+    }
+    )
 
 })

@@ -9,6 +9,7 @@
     "@sap/cds": "^7",
     "@sap/cds-hana": "^2",
     "@sap/xssec": "^3.3.5",
+    "cors": "^2.8.5",
     "express": "^4",
     "passport": "^0.6.0",
     "sequelize": "^6.37.3",
@@ -34,7 +35,9 @@
     "watch-vendoronboardapproval": "cds watch --open vendoronboardapproval/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
-    "requires": {}
+    "requires": {
+      "auth":"dummy"
+    }
   },
   "sapux": [
     "app/vobrequest",

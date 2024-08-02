@@ -92,7 +92,11 @@
             }
         },
         "resources": {
-            "css": []
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
         },
         "routing": {
             "config": {},
@@ -106,11 +110,6 @@
                     "pattern": "vobApproval({key}):?query:",
                     "name": "vobApprovalObjectPage",
                     "target": "vobApprovalObjectPage"
-                },
-                {
-                    "pattern": "vobApproval({key})/vob_yoy({key2}):?query:",
-                    "name": "YOYObjectPage",
-                    "target": "YOYObjectPage"
                 }
             ],
             "targets": {
@@ -147,25 +146,47 @@
                         "settings": {
                             "editableHeaderContent": false,
                             "contextPath": "/vobApproval",
-                            "navigation": {
-                                "vob_yoy": {
-                                    "detail": {
-                                        "route": "YOYObjectPage"
+                            "navigation": {},
+                            "content": {
+                                "body": {
+                                    "sections": {
+                                        "VendoronBoard": {
+                                            "template": "vendoronboardapproval.ext.fragment.VendoronBoard",
+                                            "position": {
+                                                "placement": "After",
+                                                "anchor": "GeneratedFacet1"
+                                            },
+                                            "title": "Vendor On Board"
+                                        },
+                                        "Commentfragment": {
+                                            "template": "vendoronboardapproval.ext.fragment.Commentfragment",
+                                            "position": {
+                                                "placement": "After",
+                                                "anchor": "VendoronBoard"
+                                            },
+                                            "title": "Comments"
+                                        },
+                                        "Workflowhistory": {
+                                            "template": "vendoronboardapproval.ext.fragment.Workflowhistory",
+                                            "position": {
+                                                "placement": "After",
+                                                "anchor": "Commentfragment"
+                                            },
+                                            "title": "Workflow History"
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                },
-                "YOYObjectPage": {
-                    "type": "Component",
-                    "id": "YOYObjectPage",
-                    "name": "sap.fe.templates.ObjectPage",
-                    "options": {
-                        "settings": {
-                            "editableHeaderContent": false,
-                            "contextPath": "/vobApproval/vob_yoy"
-                        }
+                }
+            }
+        },
+        "extends": {
+            "extensions": {
+                "sap.ui.controllerExtensions": {
+                    "sap.fe.templates.ObjectPage.ObjectPageController#vendoronboardapproval::vobApprovalObjectPage": {
+                        "controllerName": "vendoronboardapproval.ext.controller.Objectpage"
                     }
                 }
             }

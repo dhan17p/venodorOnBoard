@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:macros="sap.fe.macros">
+    <HBox core:require="{ handler: 'vendoronboarddocument/ext/fragment/Vendoronboard'}">
+
+        <VBox >
+            <Table id="parentTabledocument" class="tableClass">
+            </Table>
+        </VBox>
+        <HBox class="rightHboxClass" id='HboxDocument'>
+        </HBox>
+    </HBox>
+</core:FragmentDefinition>

@@ -63,7 +63,8 @@
                 "sap.m": {},
                 "sap.ui.core": {},
                 "sap.ushell": {},
-                "sap.fe.templates": {}
+                "sap.fe.templates": {},
+                "sap.suite.ui.commons": {}
             }
         },
         "contentDensities": {
@@ -141,8 +142,38 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "contextPath": "/vobRequest"
+                            "contextPath": "/vobRequest",
+                            "controlConfiguration": {
+                                "vob_yoy/@com.sap.vocabularies.UI.v1.LineItem#YOYAnnualProjection": {
+                                    "tableSettings": {
+                                        "type": "GridTable"
+                                    }
+                                }
+                            },
+                            "content": {
+                                "body": {
+                                    "sections": {
+                                        "Commentfragment": {
+                                            "template": "vendoronboardrequest.ext.fragment.Commentfragment",
+                                            "position": {
+                                                "placement": "After",
+                                                "anchor": "YOYAnnualProjection"
+                                            },
+                                            "title": "Comments"
+                                        }
+                                    }
+                                }
+                            }
                         }
+                    }
+                }
+            }
+        },
+        "extends": {
+            "extensions": {
+                "sap.ui.controllerExtensions": {
+                    "sap.fe.templates.ObjectPage.ObjectPageController#vendoronboardrequest::vobRequestObjectPage": {
+                        "controllerName": "vendoronboardrequest.ext.controller.Objectpage"
                     }
                 }
             }

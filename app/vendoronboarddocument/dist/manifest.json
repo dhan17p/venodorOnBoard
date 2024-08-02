@@ -92,7 +92,11 @@
             }
         },
         "resources": {
-            "css": []
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
         },
         "routing": {
             "config": {},
@@ -106,11 +110,6 @@
                     "pattern": "vobDocument({key}):?query:",
                     "name": "vobDocumentObjectPage",
                     "target": "vobDocumentObjectPage"
-                },
-                {
-                    "pattern": "vobDocument({key})/vob_yoy({key2}):?query:",
-                    "name": "YOYObjectPage",
-                    "target": "YOYObjectPage"
                 }
             ],
             "targets": {
@@ -147,25 +146,51 @@
                         "settings": {
                             "editableHeaderContent": false,
                             "contextPath": "/vobDocument",
-                            "navigation": {
-                                "vob_yoy": {
-                                    "detail": {
-                                        "route": "YOYObjectPage"
+                            "navigation": {},
+                            "content": {
+                                "body": {
+                                    "sections": {
+                                        "Vendoronboard": {
+                                            "template": "vendoronboarddocument.ext.fragment.Vendoronboard",
+                                            "title": "Vendor on Board"
+                                        },
+                                        "Commentfragment": {
+                                            "template": "vendoronboarddocument.ext.fragment.Commentfragment",
+                                            "position": {
+                                                "placement": "After",
+                                                "anchor": "Vendoronboard"
+                                            },
+                                            "title": "Comment"
+                                        },
+                                        "WOrkflowhistory": {
+                                            "template": "vendoronboarddocument.ext.fragment.WOrkflowhistory",
+                                            "position": {
+                                                "placement": "After",
+                                                "anchor": "Commentfragment"
+                                            },
+                                            "title": "WorkflowHistory"
+                                        },
+                                        "Attachmentfragment": {
+                                            "template": "vendoronboarddocument.ext.fragment.Attachmentfragment",
+                                            "position": {
+                                                "placement": "After",
+                                                "anchor": "Commentfragment"
+                                            },
+                                            "title": "Attachements"
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                },
-                "YOYObjectPage": {
-                    "type": "Component",
-                    "id": "YOYObjectPage",
-                    "name": "sap.fe.templates.ObjectPage",
-                    "options": {
-                        "settings": {
-                            "editableHeaderContent": false,
-                            "contextPath": "/vobDocument/vob_yoy"
-                        }
+                }
+            }
+        },
+        "extends": {
+            "extensions": {
+                "sap.ui.controllerExtensions": {
+                    "sap.fe.templates.ObjectPage.ObjectPageController#vendoronboarddocument::vobDocumentObjectPage": {
+                        "controllerName": "vendoronboarddocument.ext.controller.Objectpage"
                     }
                 }
             }

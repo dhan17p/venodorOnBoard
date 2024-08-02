@@ -1,10 +1,17 @@
 {
-  "Component-preload.js.map": 1721114680110,
-  "Component.js": 1721112224464,
-  "manifest.json": 1721114679591,
-  "Component-dbg.js": 1721112224464,
-  "Component.js.map": 1721114679797,
-  "Component-preload.js": 1721114680110,
+  "ext/controller/Objectpage.controller.js": 1721900472875,
+  "ext/fragment/Commentfragment.js": 1721729180110,
   "i18n/i18n.properties": 1721112234500,
+  "manifest.json": 1722582702356,
+  "Component.js": 1721112224464,
+  "Component-dbg.js": 1721112224464,
+  "Component.js.map": 1722582702480,
+  "ext/controller/Objectpage-dbg.controller.js": 1721900472875,
+  "ext/controller/Objectpage.controller.js.map": 1722582702485,
+  "ext/fragment/Commentfragment-dbg.js": 1721729180110,
+  "ext/fragment/Commentfragment.js.map": 1722582702487,
+  "Component-preload.js": 1722582702775,
+  "Component-preload.js.map": 1722582702775,
+  "ext/fragment/Commentfragment.fragment.xml": 1721731881570,
   "index.html": 1721112224464
 }

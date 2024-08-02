@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<VBox  class="mainVboxComment">
+	<HBox justifyContent="SpaceBetween">
+		<!-- <Label wrapping="true"  text=" Team Recommendation with Rationale" class="labelcomment"> -->
+		<!-- </Label> -->
+
+			<TextArea value="  " rows="8" width = "70vw"/>
+			<Button  class="buttonhistory"  core:require="{ handler: 'vendoronboardsupplier/ext/fragment/Commentfragment'}" text="Comments" press="handler.onPress" />
+	</HBox>
+	</VBox>
+</core:FragmentDefinition>
